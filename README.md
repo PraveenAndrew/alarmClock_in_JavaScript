@@ -1,6 +1,7 @@
 # alarmClock_in_JavaScript
 
 Note: this is simple javascript to create alarmClock with HTML.
+Note: i will not create javascipte file separtely so don't confuse. i wil add <script></script> tages in html file.
 
 Design 1 : first set the time with date to alarm.
 
