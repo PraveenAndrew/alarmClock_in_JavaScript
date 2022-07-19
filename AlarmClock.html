@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+       <meta charset="UTF-8">
+       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>Alarm Clock in JS</title>
+</head>
+<body>
+       
+  <input type="datetime-local"  id="time">
+  <button id="alarmBtn" type="button" onclick="setAlarm(this);">Set Alarm</button>
+  <div id="alarmOptions" style="display:none;">
+   <button type="button" onclick="snooze(this);">Snooze for 5 Minutes</button>
+   <button type="button" onclick="stopAlarm(this);">Stop Alarm</button>
+  </div>
+
+  <script>
+
+     var alarmSound = new Audio();
+     alarmSound.src = '../Projects/resources/Songs.mp3';
+
+     var alarmOptions = document.getElementById('alarmOptions');
+     var timer;
+
+     function setAlarm(button)
+     {
+        var userTime = document.getElementById('time').valueAsNumber;
+       //  document.writeln(userTime);
+
+        if(isNaN(userTime))
+        {
+               alert('Invalid Date!');
+               return;
+        }
+
+        var alarmer = new Date(userTime);
+       //  alarmer.getUTCHours();
+        alarmer = new Date(alarmer.getUTCFullYear(), alarmer.getUTCMonth(), alarmer.getUTCDate(), alarmer.getUTCHours(), alarmer.getUTCMinutes(), alarmer.getUTCSeconds());
+       
+        var timeDifference = alarmer.getTime() - (new Date()).getTime();
+       //  document.write(timeDifference);
+
+        if (timeDifference < 0)
+        {
+               alert('Specified Time is already passed!!!');
+               return;
+        }
+
+       timer = setTimeout(startAlarm, timeDifference);
+
+       alert('Alarm has to setted with You given Time!');
+        button.textContent = 'Cancel Alarm';
+        button.setAttribute('onclick', 'cancelAlarm(this)');
+    
+       };
+       
+       function startAlarm() 
+       {
+              alarmSound.play();
+              alarmOptions.style.display = 'block';
+              alert('Now the alarm was ringing with Audio!');
+       };
+
+       function cancelAlarm(button) 
+       {
+              clearTimeout(timer);   
+              button.textContent = 'Set Alarm';
+              button.setAttribute('onclick', 'setAlarm(this)');
+       };
+
+       function stopAlarm() 
+       {
+              alarmSound.pause();
+              alarmSound.currentTime = 0;
+
+              alarmOptions.style.display = 'none';
+              cancelAlarm(document.getElementById('alarmBtn'));
+       };
+
+       function snooze() 
+       {
+          stopAlarm();
+
+          timer = setTimeout(startAlarm, 100000);  // 1000(1 seconds) * 60 (60 seconds or Movements) (60000) *  5 (times) = 300000 
+       }
+
+
+  </script>
+
+</body>
+</html>
